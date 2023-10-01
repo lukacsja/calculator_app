@@ -138,24 +138,24 @@ const Calculator = () => {
   const applyButtonStyles = (button: ButtonType) => {
     switch (button.style) {
       case 'colored':
-        return 'bg-[#462878]';
+        return 'bg-purple-dark';
       case 'colored-light':
-        return 'bg-[#975DFA]';
+        return 'bg-purple-medium';
       case 'text-color':
-        return 'text-[#975DFA]';
+        return 'text-purple-medium';
       default:
-        return 'color-white';
+        return 'text-text-white';
     }
   };
 
   return (
-    <div className='main-shadow main-shadow::before main-shadow::after flex h-[544px] w-[356px] flex-col items-center gap-[26px] rounded-[48px] bg-[#2D2A37] px-[20px] py-[32px]'>
+    <div className='main-shadow main-shadow::before main-shadow::after bg-gray-dark flex h-[544px] w-[356px] flex-col items-center gap-[26px] rounded-[48px] px-[20px] py-[32px]'>
       <div className='flex h-[86px] w-[288px] flex-col items-end gap-2 pl-[22px] pr-[18px] text-[20px] leading-[1.4]'>
-        <div className='text-gray flex-1'>
+        <div className='text-gray-medium flex-1'>
           {`${storedValue} ${operator === null ? '' : operator}`}
         </div>
 
-        <div className='flex-1 text-[36px] leading-[1.4] text-white'>
+        <div className='flex-1 text-[36px] leading-[1.4] text-text-white'>
           {currentValue}
         </div>
       </div>
