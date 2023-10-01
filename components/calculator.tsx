@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import React, { useEffect, useState } from "react";
-import { buttonsData, formatLargeValue } from "@/data/data";
-import { ButtonType } from "@/types/button";
-import Image from "next/image";
+import React, { useEffect, useState } from 'react';
+import { buttonsData, formatLargeValue } from '@/data/data';
+import { ButtonType } from '@/types/button';
+import Image from 'next/image';
 
 const Calculator = () => {
-  const [currentValue, setCurrentValue] = useState<string>("");
-  const [storedValue, setStoredValue] = useState<string>("");
+  const [currentValue, setCurrentValue] = useState<string>('');
+  const [storedValue, setStoredValue] = useState<string>('');
   const [operator, setOperator] = useState<string | null>(null);
 
   const handlePlusMinusSign = () => {
@@ -20,12 +20,12 @@ const Calculator = () => {
 
   const resetCalculator = () => {
     setOperator(null);
-    setStoredValue("");
-    setCurrentValue("");
+    setStoredValue('');
+    setCurrentValue('');
   };
 
   const resetCurrentValue = () => {
-    setCurrentValue("");
+    setCurrentValue('');
   };
 
   const calculateResult = (
@@ -34,15 +34,15 @@ const Calculator = () => {
     part2: number
   ): number => {
     switch (operator) {
-      case "+":
+      case '+':
         return part1 + part2;
-      case "-":
+      case '-':
         return part1 - part2;
-      case "*":
+      case '*':
         return part1 * part2;
-      case "/":
+      case '/':
         return part2 !== 0 ? part1 / part2 : part1;
-      case "%":
+      case '%':
         return (part1 / 100) * part2;
       default:
         return part1;
@@ -51,7 +51,7 @@ const Calculator = () => {
 
   const handleOperatorClick = (button: ButtonType) => {
     if (!storedValue && !currentValue) {
-      setStoredValue("0");
+      setStoredValue('0');
     }
 
     if (!storedValue && currentValue) {
@@ -71,20 +71,20 @@ const Calculator = () => {
       setStoredValue(result.toString());
     }
 
-    setCurrentValue("");
+    setCurrentValue('');
     setOperator(button.label);
   };
 
   const handleValueClick = (button: ButtonType) => {
-    if (button.label === "." && currentValue.includes(".")) {
+    if (button.label === '.' && currentValue.includes('.')) {
       return null;
     }
 
-    if (currentValue === "" && button.label === ".") {
-      setCurrentValue("0");
+    if (currentValue === '' && button.label === '.') {
+      setCurrentValue('0');
     }
 
-    if ((currentValue === "" && button.label !== ".") || currentValue === "0") {
+    if ((currentValue === '' && button.label !== '.') || currentValue === '0') {
       setCurrentValue(button.label);
     } else {
       setCurrentValue((prevState) => prevState + button.label);
@@ -92,14 +92,14 @@ const Calculator = () => {
   };
 
   const handleEqualsClick = () => {
-    if (storedValue !== "" && operator && currentValue !== "") {
+    if (storedValue !== '' && operator && currentValue !== '') {
       const result = calculateResult(
         parseFloat(storedValue),
         operator,
         parseFloat(currentValue)
       );
       setCurrentValue(result.toString());
-      setStoredValue("");
+      setStoredValue('');
       setOperator(null);
     }
   };
@@ -108,20 +108,20 @@ const Calculator = () => {
     const handleKeyPress = (event: KeyboardEvent) => {
       const button = buttonsData.find((btn) => btn.key === event.key);
       if (button) {
-        if (button.type === "value") {
+        if (button.type === 'value') {
           handleValueClick(button);
-        } else if (button.type === "operator") {
+        } else if (button.type === 'operator') {
           handleOperatorClick(button);
-        } else if (button.label === "=") {
+        } else if (button.label === '=') {
           handleEqualsClick();
         }
       }
     };
 
-    window.addEventListener("keydown", handleKeyPress);
+    window.addEventListener('keydown', handleKeyPress);
 
     return () => {
-      window.removeEventListener("keydown", handleKeyPress);
+      window.removeEventListener('keydown', handleKeyPress);
     };
   }, [currentValue]);
 
@@ -137,44 +137,46 @@ const Calculator = () => {
 
   const applyButtonStyles = (button: ButtonType) => {
     switch (button.style) {
-      case "colored":
-        return "bg-[#462878]";
-      case "colored-light":
-        return "bg-[#975DFA]";
+      case 'colored':
+        return 'bg-[#462878]';
+      case 'colored-light':
+        return 'bg-[#975DFA]';
+      case 'text-color':
+        return 'text-[#975DFA]';
       default:
-        return "";
+        return 'color-white';
     }
   };
 
   return (
-    <div className="rounded-[48px] flex flex-col gap-[26px] px-[20px] py-[32px] items-center w-[356px] h-[544px] bg-[#2D2A37] main-shadow main-shadow::before main-shadow::after">
-      <div className="flex flex-col items-end text-[20px] pl-[22px] pr-[18px] gap-2 leading-[1.4] w-[288px] h-[86px]">
-        <div className="text-gray flex-1">
-          {`${storedValue} ${operator === null ? "" : operator}`}
+    <div className='main-shadow main-shadow::before main-shadow::after flex h-[544px] w-[356px] flex-col items-center gap-[26px] rounded-[48px] bg-[#2D2A37] px-[20px] py-[32px]'>
+      <div className='flex h-[86px] w-[288px] flex-col items-end gap-2 pl-[22px] pr-[18px] text-[20px] leading-[1.4]'>
+        <div className='text-gray flex-1'>
+          {`${storedValue} ${operator === null ? '' : operator}`}
         </div>
 
-        <div className="text-[36px] leading-[1.4] text-white flex-1">
+        <div className='flex-1 text-[36px] leading-[1.4] text-white'>
           {currentValue}
         </div>
       </div>
 
-      <div className="grid grid-cols-4 gap-3 w-[292px] h-[368px] select-none">
+      <div className='grid h-[368px] w-[292px] select-none grid-cols-4 gap-3'>
         {buttonsData.map((button) => (
           <button
             key={button.label}
             className={`${applyButtonStyles(
               button
-            )} flex justify-center items-center w-[64px] h-[64px] text-[24px] rounded-full color-white key-shadow`}
+            )} key-shadow flex h-[64px] w-[64px] items-center justify-center rounded-full text-[24px]`}
             onClick={() => {
-              if (button.type === "value") {
+              if (button.type === 'value') {
                 handleValueClick(button);
-              } else if (button.type === "operator") {
+              } else if (button.type === 'operator') {
                 handleOperatorClick(button);
-              } else if (button.label === "=") {
+              } else if (button.label === '=') {
                 handleEqualsClick();
-              } else if (button.label === "CE") {
+              } else if (button.label === 'CE') {
                 resetCurrentValue();
-              } else if (button.label === "+/-") {
+              } else if (button.label === '+/-') {
                 handlePlusMinusSign();
               } else {
                 resetCalculator();
