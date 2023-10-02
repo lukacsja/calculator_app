@@ -17,7 +17,7 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <body
-        className={`${rubik.className} to-purple-light-bg from-purple-medium-bg flex h-screen items-center justify-center bg-gradient-to-bl p-5`}
+        className={`${rubik.className} flex h-full justify-center bg-gradient-to-bl from-purple-medium-bg to-purple-light-bg p-5`}
       >
         {children}
       </body>

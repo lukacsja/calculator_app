@@ -14,10 +14,6 @@
   }
 }
 
-.gradient-bg {
-  background: linear-gradient(to bottom right, #807ece, #8e7ece);
-}
-
 .main-shadow {
   box-shadow:
     0 120px 48px 0 rgba(0, 0, 0, 0.04),

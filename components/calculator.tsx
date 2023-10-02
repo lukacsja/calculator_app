@@ -76,18 +76,25 @@ const Calculator = () => {
   };
 
   const handleValueClick = (button: ButtonType) => {
-    if (button.label === '.' && currentValue.includes('.')) {
-      return null;
-    }
+    if (currentValue.length <= 10) {
+      if (button.label === '.' && currentValue.includes('.')) {
+        return null;
+      }
 
-    if (currentValue === '' && button.label === '.') {
-      setCurrentValue('0');
-    }
+      if (currentValue === '' && button.label === '.') {
+        setCurrentValue('0');
+      }
 
-    if ((currentValue === '' && button.label !== '.') || currentValue === '0') {
-      setCurrentValue(button.label);
+      if (
+        (currentValue === '' && button.label !== '.') ||
+        currentValue === '0'
+      ) {
+        setCurrentValue(button.label);
+      } else {
+        setCurrentValue((prevState) => prevState + button.label);
+      }
     } else {
-      setCurrentValue((prevState) => prevState + button.label);
+      return null;
     }
   };
 
@@ -98,7 +105,19 @@ const Calculator = () => {
         operator,
         parseFloat(currentValue)
       );
-      setCurrentValue(result.toString());
+
+      const hasDecimal = result.toString().includes('.');
+
+      if (hasDecimal && result.toString().length > 11) {
+        const parts = result.toString().split('.');
+        const shortResult = result.toFixed(11 - parts[0].length);
+
+        setCurrentValue(shortResult.toString());
+
+        console.log('ROUNDED');
+      } else {
+        setCurrentValue(result.toString());
+      }
       setStoredValue('');
       setOperator(null);
     }
@@ -126,7 +145,7 @@ const Calculator = () => {
   }, [currentValue]);
 
   useEffect(() => {
-    const threshold = 1e10;
+    const threshold = 1e11;
     const numericValue = parseFloat(currentValue);
 
     if (Math.abs(numericValue) >= threshold) {
@@ -149,13 +168,13 @@ const Calculator = () => {
   };
 
   return (
-    <div className='main-shadow main-shadow::before main-shadow::after bg-gray-dark flex h-[544px] w-[356px] flex-col items-center gap-[26px] rounded-[48px] px-[20px] py-[32px]'>
+    <div className='main-shadow main-shadow::before main-shadow::after flex h-[544px] w-[356px] flex-col items-center gap-[26px] rounded-[48px] bg-gray-dark px-[20px] py-[32px]'>
       <div className='flex h-[86px] w-[288px] flex-col items-end gap-2 pl-[22px] pr-[18px] text-[20px] leading-[1.4]'>
-        <div className='text-gray-medium flex-1'>
+        <div className='flex-1 text-gray-medium'>
           {`${storedValue} ${operator === null ? '' : operator}`}
         </div>
 
-        <div className='flex-1 text-[36px] leading-[1.4] text-text-white'>
+        <div className='flex-1 overflow-hidden text-[36px] leading-[1.4] text-text-white'>
           {currentValue}
         </div>
       </div>
